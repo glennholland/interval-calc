@@ -12,7 +12,7 @@ const Table = ({
   variant,
 }: {
   scale: SCALE;
-  variant: 'intervals' | 'notes' | 'chords';
+  variant: 'intervals' | 'notes';
 }) => {
   const computedNotes = NOTE_ORDER.map((n) => computeScale(n, scale));
   const computedIntervals = SCALE_INTERVALS[scale];

@@ -34,9 +34,7 @@ function App() {
   );
 
   const [activeScale, setActiveScale] = useState<SCALE>('chromatic');
-  const [variant, setVariant] = useState<'intervals' | 'notes' | 'chords'>(
-    'intervals'
-  );
+  const [variant, setVariant] = useState<'intervals' | 'notes'>('notes');
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,9 +75,7 @@ function App() {
           </Box>
           <Autocomplete
             value={variant}
-            onChange={(_e, value) =>
-              setVariant(value as 'intervals' | 'notes' | 'chords')
-            }
+            onChange={(_e, value) => setVariant(value as 'intervals' | 'notes')}
             sx={{ width: '200px' }}
             size="small"
             disableClearable
@@ -94,7 +90,7 @@ function App() {
             width: '100%',
             height: 'fit-content',
             maxWidth: '722px',
-            maxHeight: '419px',
+            maxHeight: 'fit-content',
             minWidth: 0,
             flexShrink: 1,
           }}
