@@ -80,7 +80,7 @@ function App() {
             size="small"
             disableClearable
             blurOnSelect
-            options={['intervals', 'notes', 'chords']}
+            options={['intervals', 'notes']}
             renderInput={(params) => <TextField label="Variant" {...params} />}
           />
         </Box>
