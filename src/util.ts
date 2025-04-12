@@ -108,6 +108,22 @@ export const SCALES = [
 
 export type SCALE = (typeof SCALES)[number];
 
+export function scaleNameToTitleCase(scaleName: SCALE): string {
+  // First, handle special case of 'bebop' which should just be capitalized
+  if (scaleName === 'bebop') return 'Bebop';
+
+  // Split the camelCase string into words and capitalize first letter of each
+  return (
+    scaleName
+      // Insert space before capital letters
+      .replace(/([A-Z])/g, ' $1')
+      // Handle the first character
+      .replace(/^./, (str) => str.toUpperCase())
+      // Trim any extra spaces
+      .trim()
+  );
+}
+
 export const SCALE_INTERVALS: Record<SCALE, Interval[]> = {
   chromatic: [
     'P1',

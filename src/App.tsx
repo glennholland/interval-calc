@@ -16,7 +16,7 @@ import { useMemo, useState } from 'react';
 import './App.css';
 import Cycle from './components/cycle/Cycle';
 import Table from './Table';
-import { SCALE, SCALES } from './util';
+import { SCALE, scaleNameToTitleCase, SCALES } from './util';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -74,6 +74,7 @@ function App() {
               options={SCALES}
               disableClearable
               renderInput={(params) => <TextField label="Scale" {...params} />}
+              getOptionLabel={(option) => scaleNameToTitleCase(option)}
               sx={{ width: '200px' }}
               blurOnSelect
               size="small"
@@ -87,6 +88,9 @@ function App() {
             disableClearable
             blurOnSelect
             options={['intervals', 'notes']}
+            getOptionLabel={(option) =>
+              option === 'intervals' ? 'Intervals' : 'Notes'
+            }
             renderInput={(params) => <TextField label="Variant" {...params} />}
           />
           <FormControl>
@@ -101,8 +105,8 @@ function App() {
               sx={{ width: '200px' }}
               size="small"
             >
-              <MenuItem value="flat">Flat</MenuItem>
-              <MenuItem value="sharp">Sharp</MenuItem>
+              <MenuItem value="flat">Flat ♭</MenuItem>
+              <MenuItem value="sharp">Sharp ♯</MenuItem>
             </Select>
           </FormControl>
         </Box>

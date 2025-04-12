@@ -43,8 +43,9 @@ const Table = ({
         },
         flex: 1,
         width: 60,
-        sortable: true,
+        sortable: i === 0,
         disableColumnMenu: true,
+        resizable: false,
       }))}
       sx={{ width: '100%', height: 'fit-content' }}
       getRowId={(row) => row[0]}
