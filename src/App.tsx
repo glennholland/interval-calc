@@ -2,7 +2,11 @@ import {
   Autocomplete,
   Box,
   CssBaseline,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
   useMediaQuery,
@@ -10,6 +14,7 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useMemo, useState } from 'react';
 import './App.css';
+import Cycle from './components/cycle/Cycle';
 import Table from './Table';
 import { SCALE, SCALES } from './util';
 
@@ -35,6 +40,7 @@ function App() {
 
   const [activeScale, setActiveScale] = useState<SCALE>('chromatic');
   const [variant, setVariant] = useState<'intervals' | 'notes'>('notes');
+  const [accidental, setAccidental] = useState<'flat' | 'sharp'>('flat');
 
   return (
     <ThemeProvider theme={theme}>
@@ -83,20 +89,58 @@ function App() {
             options={['intervals', 'notes']}
             renderInput={(params) => <TextField label="Variant" {...params} />}
           />
+          <FormControl>
+            <InputLabel id="accidental-label">Accidental</InputLabel>
+            <Select
+              label="Accidental"
+              labelId="accidental-label"
+              value={accidental}
+              onChange={(e) =>
+                setAccidental(e.target.value as 'flat' | 'sharp')
+              }
+              sx={{ width: '200px' }}
+              size="small"
+            >
+              <MenuItem value="flat">Flat</MenuItem>
+              <MenuItem value="sharp">Sharp</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
-        <Paper
+        <Box
           sx={{
-            flex: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
             width: '100%',
-            height: 'fit-content',
-            maxWidth: '722px',
-            maxHeight: 'fit-content',
-            minWidth: 0,
-            flexShrink: 1,
           }}
         >
-          <Table scale={activeScale} variant={variant} />
-        </Paper>
+          <Paper
+            sx={{
+              flex: 1,
+              width: '100%',
+              height: 'fit-content',
+              maxWidth: '722px',
+              maxHeight: 'fit-content',
+              minWidth: 0,
+              flexShrink: 1,
+            }}
+          >
+            <Table
+              scale={activeScale}
+              variant={variant}
+              accidental={accidental}
+            />
+          </Paper>
+          <Box
+            sx={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Cycle accidental={accidental} />
+          </Box>
+        </Box>
       </Box>
     </ThemeProvider>
   );

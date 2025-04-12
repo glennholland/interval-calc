@@ -1,7 +1,7 @@
 type NoteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B';
 type Accidental = 'bb' | 'b' | '' | '#' | '##';
 
-type Note = `${NoteName}${Accidental}`;
+export type Note = `${NoteName}${Accidental}`;
 
 type ScaleDegree = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
@@ -24,7 +24,22 @@ export const NOTE_ORDER: Note[] = [
   'B',
 ];
 
-const ENHARMONIC_EQUIVALENTS: Record<Note, string> = {
+export const CYCLE_OF_FIFTHS: Note[] = [
+  'C',
+  'G',
+  'D',
+  'A',
+  'E',
+  'B',
+  'F#',
+  'C#',
+  'G#',
+  'D#',
+  'A#',
+  'F',
+];
+
+export const ENHARMONIC_EQUIVALENTS: Record<Note, string> = {
   C: 'C',
   'C#': 'Db',
   'C##': 'D',
@@ -170,12 +185,8 @@ function transpose(note: Note, semitones: number): Note {
   return NOTE_ORDER[(index + semitones + 12) % 12];
 }
 
-function adjustEnharmonic(note: Note, key: Note): Note {
-  if (ENHARMONIC_EQUIVALENTS[note]) {
-    // Prefer sharps in sharp keys and flats in flat keys
-    return key.includes('#') ? note : (ENHARMONIC_EQUIVALENTS[note] as Note);
-  }
-  return note;
+export function adjustEnharmonic(note: Note): Note {
+  return ENHARMONIC_EQUIVALENTS[note] as Note;
 }
 
 function getSemitones(interval: Interval): number {
@@ -207,9 +218,7 @@ export function computeScale(
   scaleType: keyof typeof SCALE_INTERVALS
 ): Note[] {
   const intervals = SCALE_INTERVALS[scaleType];
-  return intervals.map((interval) =>
-    adjustEnharmonic(transpose(root, getSemitones(interval)), root)
-  );
+  return intervals.map((interval) => transpose(root, getSemitones(interval)));
 }
 
 export function identifyChord(notes: Note[]): string {
