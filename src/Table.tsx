@@ -25,9 +25,13 @@ const Table = ({
 
   const rowsWithAccidentals = rows.map((row) =>
     row.map((note) =>
-      accidental === 'flat' ? adjustEnharmonic(note as Note) : note
+      accidental === 'flat' && variant !== 'intervals'
+        ? adjustEnharmonic(note as Note)
+        : note
     )
   );
+
+  console.log(rowsWithAccidentals);
 
   return (
     <DataGrid<string[]>
