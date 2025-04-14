@@ -1,4 +1,10 @@
-import { DataGrid } from '@mui/x-data-grid';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from './components/table';
 import {
   NOTE_ORDER,
   Note,
@@ -7,9 +13,9 @@ import {
   adjustEnharmonic,
   computeScale,
   romanize,
-} from './util';
+} from './util/scaleUtils';
 
-const Table = ({
+const DataTable = ({
   scale,
   variant,
   accidental,
@@ -31,33 +37,41 @@ const Table = ({
     )
   );
 
-  console.log(rowsWithAccidentals);
-
   return (
-    <DataGrid<string[]>
-      rows={rowsWithAccidentals}
-      columns={Array.from(new Array(rows[0].length)).map((_, i) => ({
-        field: romanize(i + 1),
-        headerName: romanize(i + 1),
-        type: 'string',
-        align: 'center',
-        headerAlign: 'center',
-        renderCell: (params) => {
-          return `${params.row[i]}`;
-        },
-        flex: 1,
-        width: 60,
-        sortable: i === 0,
-        disableColumnMenu: true,
-        resizable: false,
-      }))}
-      sx={{ width: '100%', height: 'fit-content' }}
-      getRowId={(row) => row[0]}
-      hideFooter
-      rowHeight={30}
-      rowSelection={false}
-    />
+    <Table>
+      <TableHead>
+        <TableRow sx={{ backgroundColor: (t) => t.palette.primary.main }}>
+          {rowsWithAccidentals.map((_, idx) => (
+            <TableCell
+              alignContent="center"
+              sx={{
+                minWidth: '30px',
+                color: (t) => t.palette.primary.contrastText,
+              }}
+              key={idx}
+            >
+              {romanize(idx + 1)}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {rowsWithAccidentals.map((row, idx) => (
+          <TableRow key={idx}>
+            {row.map((note) => (
+              <TableCell
+                alignContent="center"
+                sx={{ minWidth: '30px' }}
+                key={note}
+              >
+                {note}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
-export default Table;
+export default DataTable;

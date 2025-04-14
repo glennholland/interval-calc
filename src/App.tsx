@@ -16,7 +16,7 @@ import { useMemo, useState } from 'react';
 import './App.css';
 import Cycle from './components/cycle/Cycle';
 import Table from './Table';
-import { SCALE, scaleNameToTitleCase, SCALES } from './util';
+import { SCALE, scaleNameToTitleCase, SCALES } from './util/scaleUtils';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -57,7 +57,7 @@ function App() {
           justifyContent: 'flex-start',
         }}
       >
-        <Typography variant="h2">Intervals</Typography>
+        <Typography variant="h4">Intervals</Typography>
         <Box
           sx={{
             display: 'flex',
@@ -65,6 +65,7 @@ function App() {
             gap: 2,
             background: (t) => t.palette.divider,
             padding: 2,
+            flexWrap: 'wrap',
           }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -115,6 +116,7 @@ function App() {
             display: 'flex',
             justifyContent: 'space-between',
             width: '100%',
+            flexWrap: 'wrap',
           }}
         >
           <Paper
@@ -124,8 +126,9 @@ function App() {
               height: 'fit-content',
               maxWidth: '722px',
               maxHeight: 'fit-content',
-              minWidth: 0,
+
               flexShrink: 1,
+              minWidth: 'fit-content',
             }}
           >
             <Table

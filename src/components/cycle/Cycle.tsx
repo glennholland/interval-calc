@@ -1,5 +1,5 @@
 import { Box, Divider } from '@mui/material';
-import { adjustEnharmonic, CYCLE_OF_FIFTHS } from '../../util';
+import { adjustEnharmonic, CYCLE_OF_FIFTHS } from '../../util/scaleUtils';
 
 const Cycle = ({ accidental }: { accidental: 'flat' | 'sharp' }) => {
   const notes =
@@ -7,7 +7,16 @@ const Cycle = ({ accidental }: { accidental: 'flat' | 'sharp' }) => {
       ? CYCLE_OF_FIFTHS
       : CYCLE_OF_FIFTHS.map(adjustEnharmonic);
   return (
-    <Box sx={{ position: 'relative', width: '400px', height: '400px' }}>
+    <Box
+      sx={{
+        position: 'relative',
+        maxWidth: '85vw',
+        maxHeight: '85vw',
+        height: '300px',
+        width: '300px',
+        paddingTop: '100px',
+      }}
+    >
       {notes.map((note, idx) => (
         <Box
           key={note}

@@ -1,0 +1,241 @@
+.table {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border-radius: 4px;
+}
+
+.table-row {
+  display: flex;
+  height: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-row-no-border {
+  border: none;
+}
+
+.table-row-top-border {
+  border-top: rgba(255, 255, 255, 0.1);
+}
+.table-row-reverse {
+  flex-direction: row-reverse;
+}
+.table-row-expandable {
+  height: unset;
+  min-height: 20px;
+}
+
+.table-body {
+  flex: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: fit-content;
+  min-width: 100%;
+}
+
+.table-body-alternate-rows > div:nth-of-type(odd) {
+  background: rgba(125, 125, 125, 0.1);
+}
+
+.table-head {
+  width: fit-content;
+  min-width: 100%;
+  flex: 0;
+}
+
+.table-body div:last-child {
+  border-bottom: rgba(255, 255, 255, 0.1);
+}
+
+.table-cell {
+  padding: 0 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2;
+  overflow: hidden;
+  position: relative;
+}
+
+.table-cell > button,
+.table-cell > span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.table-text-cell {
+  min-width: 48px;
+  width: 48px;
+  max-width: 160px;
+  flex: 1.4;
+}
+
+.table-id-cell {
+  width: 40px;
+  min-width: 40px;
+  max-width: 110px;
+  flex: 0.6;
+}
+
+.table-product-name-cell {
+  width: 60px;
+  min-width: 60px;
+  flex: 1;
+}
+
+.table-cell > span {
+  white-space: nowrap;
+}
+
+.table-product-identifier-cell {
+  width: 100px;
+  min-width: 100px;
+  max-width: 160px;
+  flex: 2;
+}
+
+.table-date-cell {
+  min-width: 90px;
+  flex: 0;
+  padding-right: 2px;
+}
+
+.table-status-cell {
+  width: 48px;
+  min-width: 48px;
+  flex: 0;
+}
+
+.table-depth-cell {
+  width: 40px;
+  min-width: 40px;
+  max-width: 80px;
+  flex: 1;
+}
+
+/* Hybrid cells */
+.table-clearers-cell {
+  width: 55px;
+  min-width: 55px;
+  flex: 0;
+}
+
+.table-account-cell {
+  width: 80px;
+  min-width: 80px;
+  flex: 0;
+}
+
+.table-commission-cell {
+  width: 55px;
+  min-width: 55px;
+  flex: 0;
+}
+
+.table-user-cell {
+  width: 100px;
+  min-width: 100px;
+  flex: 0;
+}
+
+.table-200-cell {
+  max-width: 200px;
+  min-width: 200px;
+}
+
+.table-250-cell {
+  max-width: 250px;
+  min-width: 250px;
+}
+
+/* Input cells */
+.table-price-cell {
+  flex: 0;
+  width: 7.1ch;
+  min-width: 7.1ch;
+}
+.table-qty-cell {
+  flex: 0;
+  width: 4.1ch;
+  min-width: 4.1ch;
+}
+.table-qtys-cell {
+  flex: 0;
+  width: 7.8ch;
+  min-width: 7.8ch;
+}
+.table-index-title-cell {
+  flex: 0;
+  width: 5.5ch;
+  min-width: 5.5ch;
+}
+
+/* Special */
+.table-order-cell {
+  flex: 1;
+  width: 100%;
+  padding: 0px;
+  align-items: flex-start;
+}
+
+/* Augmentations - Used to override defaults but are non specific */
+.table-cell-align-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+.table-cell-align-center {
+  justify-content: center;
+  text-align: center;
+}
+.table-cell-align-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+/* Icons and Actions */
+.table-action-cell {
+  min-width: 20px;
+  width: 20px;
+  flex: 0;
+}
+
+.table-cell-pad {
+  flex: 1.5;
+  max-width: 'none';
+}
+
+.table-action-cell > svg,
+.table-actions-cells > svg,
+.table-actions-cells > svg {
+  height: 14px;
+  width: 14px;
+}
+
+.table-actions-cell {
+  min-width: 42px;
+  width: 42px;
+  height: 100%;
+  flex: 0;
+  justify-content: space-around;
+}
+.table-age-cell {
+  min-width: 30px;
+  width: 30px;
+  flex: 0;
+  display: flex;
+}
+.table-side-cell {
+  width: 35px;
+  min-width: 35px;
+  flex: 0;
+}
+.table-market-indicator-cell {
+  width: 6px;
+  min-width: 6px;
+  flex: 0;
+}
