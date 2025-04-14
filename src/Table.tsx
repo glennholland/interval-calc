@@ -38,7 +38,7 @@ const DataTable = ({
   );
 
   return (
-    <Table>
+    <Table sx={{ border: (t) => `1px solid ${t.palette.primary.main}` }}>
       <TableHead>
         <TableRow
           key={rowsWithAccidentals.length}
@@ -61,11 +61,21 @@ const DataTable = ({
       </TableHead>
       <TableBody>
         {rowsWithAccidentals.map((row, idx) => (
-          <TableRow key={idx}>
-            {row.map((note) => (
+          <TableRow
+            key={idx}
+            sx={{ borderBottomColor: (t) => t.palette.primary.main }}
+          >
+            {row.map((note, cIdx) => (
               <TableCell
                 alignContent="center"
-                sx={{ minWidth: '30px', width: '30px' }}
+                sx={{
+                  minWidth: '30px',
+                  width: '30px',
+                  borderRight:
+                    cIdx < row.length - 1
+                      ? (t) => `1px solid ${t.palette.divider}`
+                      : 'none',
+                }}
                 key={note}
               >
                 {note}
