@@ -93,22 +93,24 @@ function App() {
             }
             renderInput={(params) => <TextField label="Variant" {...params} />}
           />
-          <FormControl>
-            <InputLabel id="accidental-label">Accidental</InputLabel>
-            <Select
-              label="Accidental"
-              labelId="accidental-label"
-              value={accidental}
-              onChange={(e) =>
-                setAccidental(e.target.value as 'flat' | 'sharp')
-              }
-              sx={{ width: '200px' }}
-              size="small"
-            >
-              <MenuItem value="flat">Flat ♭</MenuItem>
-              <MenuItem value="sharp">Sharp ♯</MenuItem>
-            </Select>
-          </FormControl>
+          {variant === 'notes' && (
+            <FormControl>
+              <InputLabel id="accidental-label">Accidental</InputLabel>
+              <Select
+                label="Accidental"
+                labelId="accidental-label"
+                value={accidental}
+                onChange={(e) =>
+                  setAccidental(e.target.value as 'flat' | 'sharp')
+                }
+                sx={{ width: '200px' }}
+                size="small"
+              >
+                <MenuItem value="flat">Flat ♭</MenuItem>
+                <MenuItem value="sharp">Sharp ♯</MenuItem>
+              </Select>
+            </FormControl>
+          )}
         </Box>
         <Box
           sx={{
