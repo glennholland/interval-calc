@@ -14,7 +14,6 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useMemo, useState } from 'react';
 import './App.css';
-import Cycle from './components/cycle/Cycle';
 import Table from './Table';
 import { SCALE, scaleNameToTitleCase, SCALES } from './util/scaleUtils';
 
@@ -137,7 +136,7 @@ function App() {
               accidental={accidental}
             />
           </Paper>
-          <Box
+          {/* <Box
             sx={{
               flex: 1,
               display: 'flex',
@@ -145,8 +144,8 @@ function App() {
               alignItems: 'center',
             }}
           >
-            <Cycle accidental={accidental} />
-          </Box>
+           <Cycle accidental={accidental} />
+          </Box> */}
         </Box>
       </Box>
     </ThemeProvider>
