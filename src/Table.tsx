@@ -40,12 +40,16 @@ const DataTable = ({
   return (
     <Table>
       <TableHead>
-        <TableRow sx={{ backgroundColor: (t) => t.palette.primary.main }}>
-          {rowsWithAccidentals.map((_, idx) => (
+        <TableRow
+          key={rowsWithAccidentals.length}
+          sx={{ backgroundColor: (t) => t.palette.primary.main }}
+        >
+          {rowsWithAccidentals[0].map((_, idx) => (
             <TableCell
               alignContent="center"
               sx={{
                 minWidth: '30px',
+                width: '30px',
                 color: (t) => t.palette.primary.contrastText,
               }}
               key={idx}
@@ -61,7 +65,7 @@ const DataTable = ({
             {row.map((note) => (
               <TableCell
                 alignContent="center"
-                sx={{ minWidth: '30px' }}
+                sx={{ minWidth: '30px', width: '30px' }}
                 key={note}
               >
                 {note}
