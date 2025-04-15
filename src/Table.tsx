@@ -87,7 +87,7 @@ const DataTable = ({
         }}
       >
         <TableBody>
-          {rowsWithAccidentals.map((row, idx, arr) => {
+          {rowsWithAccidentals.map((row, idx) => {
             const backgroundColor = getNoteColor(activeNotes[idx]);
             return (
               <TableRow

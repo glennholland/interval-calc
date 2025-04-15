@@ -73,8 +73,8 @@ function App() {
             display: 'flex',
             width: '100%',
             gap: 2,
-            padding: 2,
-            flexWrap: 'wrap',
+            padding: 1,
+            justifyContent: 'space-around',
           }}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
