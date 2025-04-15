@@ -99,7 +99,6 @@ function App() {
               onChange={(e) =>
                 setAccidental(e.target.value as 'flat' | 'sharp')
               }
-              sx={{ width: '200px' }}
               size="small"
             >
               <MenuItem value="flat">Flat ♭</MenuItem>
@@ -112,40 +111,93 @@ function App() {
             display: 'flex',
             width: '100%',
             justifyContent: 'space-between',
+            flexWrap: 'wrap',
           }}
         >
-          {NOTE_ORDER.map((note) => (
-            <IconButton
-              size="small"
-              key={note}
-              sx={{
-                border: `1px solid ${getNoteColor(note)}`,
-                backgroundColor: activeNotes.includes(note)
-                  ? getNoteColor(note)
-                  : alpha(getNoteColor(note), 0.2),
-
-                maxWidth: '36px',
-                maxHeight: '36px',
-              }}
-              onClick={() => toggleNote(note)}
-            >
-              <Box
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-around',
+              marginTop: 1,
+            }}
+          >
+            {NOTE_ORDER.slice(0, 6).map((note) => (
+              <IconButton
+                size="small"
+                key={note}
                 sx={{
-                  width: '30px',
-                  height: '30px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: (t) =>
-                    activeNotes.includes(note)
-                      ? t.palette.getContrastText(getNoteColor(note))
-                      : getNoteColor(note),
+                  border: `1px solid ${getNoteColor(note)}`,
+                  backgroundColor: activeNotes.includes(note)
+                    ? getNoteColor(note)
+                    : alpha(getNoteColor(note), 0.2),
+
+                  maxWidth: '36px',
+                  maxHeight: '36px',
                 }}
+                onClick={() => toggleNote(note)}
               >
-                {accidental === 'flat' ? adjustEnharmonic(note) : note}
-              </Box>
-            </IconButton>
-          ))}
+                <Box
+                  sx={{
+                    width: '30px',
+                    height: '30px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: (t) =>
+                      activeNotes.includes(note)
+                        ? t.palette.getContrastText(getNoteColor(note))
+                        : getNoteColor(note),
+                  }}
+                >
+                  {accidental === 'flat' ? adjustEnharmonic(note) : note}
+                </Box>
+              </IconButton>
+            ))}
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              justifyContent: 'space-around',
+              marginTop: 1,
+            }}
+          >
+            {NOTE_ORDER.slice(6).map((note) => (
+              <IconButton
+                size="small"
+                key={note}
+                sx={{
+                  border: `1px solid ${getNoteColor(note)}`,
+                  backgroundColor: activeNotes.includes(note)
+                    ? getNoteColor(note)
+                    : alpha(getNoteColor(note), 0.2),
+
+                  maxWidth: '36px',
+                  maxHeight: '36px',
+                }}
+                onClick={() => toggleNote(note)}
+              >
+                <Box
+                  sx={{
+                    width: '30px',
+                    height: '30px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: (t) =>
+                      activeNotes.includes(note)
+                        ? t.palette.getContrastText(getNoteColor(note))
+                        : getNoteColor(note),
+                  }}
+                >
+                  {accidental === 'flat' ? adjustEnharmonic(note) : note}
+                </Box>
+              </IconButton>
+            ))}
+          </Box>
         </Box>
         <Box
           sx={{
