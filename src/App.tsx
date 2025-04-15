@@ -1,49 +1,60 @@
 import {
+  alpha,
   Autocomplete,
   Box,
-  CssBaseline,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   TextField,
-  Typography,
-  useMediaQuery,
 } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useMemo, useState } from 'react';
+import { getNoteColor } from '@util/colorUtils';
+import { useState } from 'react';
 import './App.css';
 import Table from './Table';
-import { SCALE, scaleNameToTitleCase, SCALES } from './util/scaleUtils';
+import {
+  adjustEnharmonic,
+  NOTE_ORDER,
+  Root,
+  SCALE,
+  scaleNameToTitleCase,
+  SCALES,
+} from './util/scaleUtils';
 
 function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = useMemo(
-    () =>
-      createTheme(
-        prefersDarkMode
-          ? {
-              palette: {
-                mode: 'dark',
-              },
-            }
-          : {
-              palette: {
-                mode: 'light',
-              },
-            }
-      ),
-    [prefersDarkMode]
-  );
-
   const [activeScale, setActiveScale] = useState<SCALE>('chromatic');
-  const [variant, setVariant] = useState<'intervals' | 'notes'>('notes');
   const [accidental, setAccidental] = useState<'flat' | 'sharp'>('flat');
+  const [activeNotes, setActiveNotes] = useState<Root[]>(['C']);
+
+  const toggleNote = (note: Root) => {
+    setActiveNotes((prev) => {
+      const prevContainsNote = prev.includes(note);
+
+      if (!prevContainsNote) {
+        return [...prev, note];
+      }
+
+      const nextActiveNotes = prev.filter((n) => n !== note);
+
+      if (nextActiveNotes.length === 0) {
+        return ['C'];
+      }
+
+      return nextActiveNotes;
+    });
+  };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+      }}
+    >
       <Box
         sx={{
           width: '100%',
@@ -51,18 +62,17 @@ function App() {
           display: 'flex',
           alignItems: 'flex-start',
           flexDirection: 'column',
-          padding: '20px',
-          gap: 4,
+          padding: '8px',
+          gap: 1,
           justifyContent: 'flex-start',
+          maxWidth: '600px',
         }}
       >
-        <Typography variant="h4">Intervals</Typography>
-        <Box
+        <Paper
           sx={{
             display: 'flex',
             width: '100%',
             gap: 2,
-            background: (t) => t.palette.divider,
             padding: 2,
             flexWrap: 'wrap',
           }}
@@ -80,37 +90,62 @@ function App() {
               size="small"
             />
           </Box>
-          <Autocomplete
-            value={variant}
-            onChange={(_e, value) => setVariant(value as 'intervals' | 'notes')}
-            sx={{ width: '200px' }}
-            size="small"
-            disableClearable
-            blurOnSelect
-            options={['intervals', 'notes']}
-            getOptionLabel={(option) =>
-              option === 'intervals' ? 'Intervals' : 'Notes'
-            }
-            renderInput={(params) => <TextField label="Variant" {...params} />}
-          />
-          {variant === 'notes' && (
-            <FormControl>
-              <InputLabel id="accidental-label">Accidental</InputLabel>
-              <Select
-                label="Accidental"
-                labelId="accidental-label"
-                value={accidental}
-                onChange={(e) =>
-                  setAccidental(e.target.value as 'flat' | 'sharp')
-                }
-                sx={{ width: '200px' }}
-                size="small"
+          <FormControl>
+            <InputLabel id="accidental-label">Accidental</InputLabel>
+            <Select
+              label="Accidental"
+              labelId="accidental-label"
+              value={accidental}
+              onChange={(e) =>
+                setAccidental(e.target.value as 'flat' | 'sharp')
+              }
+              sx={{ width: '200px' }}
+              size="small"
+            >
+              <MenuItem value="flat">Flat ♭</MenuItem>
+              <MenuItem value="sharp">Sharp ♯</MenuItem>
+            </Select>
+          </FormControl>
+        </Paper>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
+          }}
+        >
+          {NOTE_ORDER.map((note) => (
+            <IconButton
+              size="small"
+              key={note}
+              sx={{
+                border: `1px solid ${getNoteColor(note)}`,
+                backgroundColor: activeNotes.includes(note)
+                  ? getNoteColor(note)
+                  : alpha(getNoteColor(note), 0.2),
+
+                maxWidth: '36px',
+                maxHeight: '36px',
+              }}
+              onClick={() => toggleNote(note)}
+            >
+              <Box
+                sx={{
+                  width: '30px',
+                  height: '30px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  color: (t) =>
+                    activeNotes.includes(note)
+                      ? t.palette.getContrastText(getNoteColor(note))
+                      : getNoteColor(note),
+                }}
               >
-                <MenuItem value="flat">Flat ♭</MenuItem>
-                <MenuItem value="sharp">Sharp ♯</MenuItem>
-              </Select>
-            </FormControl>
-          )}
+                {accidental === 'flat' ? adjustEnharmonic(note) : note}
+              </Box>
+            </IconButton>
+          ))}
         </Box>
         <Box
           sx={{
@@ -120,24 +155,23 @@ function App() {
             flexWrap: 'wrap',
           }}
         >
-          <Paper
+          <Box
             sx={{
               flex: 1,
               width: '100%',
               height: 'fit-content',
               maxWidth: '722px',
               maxHeight: 'fit-content',
-
               flexShrink: 1,
               minWidth: 'fit-content',
             }}
           >
             <Table
               scale={activeScale}
-              variant={variant}
               accidental={accidental}
+              activeNotes={activeNotes}
             />
-          </Paper>
+          </Box>
           {/* <Box
             sx={{
               flex: 1,
@@ -150,7 +184,7 @@ function App() {
           </Box> */}
         </Box>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }
 

@@ -1,90 +1,137 @@
+import { Box } from '@mui/material';
+import { getNoteColor } from '@util/colorUtils';
+import { Table, TableBody, TableCell, TableRow } from './components/table';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from './components/table';
-import {
+  DIATONIC_CHORD_SCALES,
   NOTE_ORDER,
-  Note,
+  Root,
   SCALE,
   SCALE_INTERVALS,
   adjustEnharmonic,
   computeScale,
+  isDiatonicChordScale,
   romanize,
 } from './util/scaleUtils';
 
 const DataTable = ({
   scale,
-  variant,
+
   accidental,
+  activeNotes,
 }: {
   scale: SCALE;
-  variant: 'intervals' | 'notes';
   accidental: 'flat' | 'sharp';
+  activeNotes: Root[];
 }) => {
-  const computedNotes = NOTE_ORDER.map((n) => computeScale(n, scale));
+  const computedNotes = NOTE_ORDER.filter((n) => activeNotes.includes(n)).map(
+    (n) => computeScale(n, scale)
+  );
   const computedIntervals = SCALE_INTERVALS[scale];
 
-  const rows = variant === 'intervals' ? [computedIntervals] : computedNotes;
-
-  const rowsWithAccidentals = rows.map((row) =>
-    row.map((note) =>
-      accidental === 'flat' && variant !== 'intervals'
-        ? adjustEnharmonic(note as Note)
-        : note
-    )
+  const rowsWithAccidentals = computedNotes.map((row) =>
+    row.map((note) => (accidental === 'flat' ? adjustEnharmonic(note) : note))
   );
 
   return (
-    <Table sx={{ border: (t) => `1px solid ${t.palette.primary.main}` }}>
-      <TableHead>
-        <TableRow
-          key={rowsWithAccidentals.length}
-          sx={{ backgroundColor: (t) => t.palette.primary.main }}
-        >
-          {rowsWithAccidentals[0].map((_, idx) => (
-            <TableCell
-              alignContent="center"
-              sx={{
-                minWidth: '30px',
-                width: '30px',
-                color: (t) => t.palette.primary.contrastText,
-              }}
-              key={idx}
-            >
-              {romanize(idx + 1)}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {rowsWithAccidentals.map((row, idx) => (
-          <TableRow
-            key={idx}
-            sx={{ borderBottomColor: (t) => t.palette.primary.main }}
-          >
-            {row.map((note, cIdx) => (
+    <Box sx={{}}>
+      <Box sx={{}}>Scale Degrees</Box>
+      <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
+        <TableBody>
+          <TableRow key={rowsWithAccidentals.length}>
+            {rowsWithAccidentals[0].map((_, idx) => (
               <TableCell
                 alignContent="center"
                 sx={{
                   minWidth: '30px',
                   width: '30px',
-                  borderRight:
-                    cIdx < row.length - 1
-                      ? (t) => `1px solid ${t.palette.divider}`
-                      : 'none',
                 }}
-                key={note}
+                key={idx}
               >
-                {note}
+                {romanize(idx + 1)}
               </TableCell>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableBody>
+      </Table>
+
+      <Box sx={{}}>Intervals</Box>
+      <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
+        <TableBody>
+          <TableRow key={'intervals'}>
+            {computedIntervals.map((interval) => (
+              <TableCell key={interval}>{interval}</TableCell>
+            ))}
+          </TableRow>
+        </TableBody>
+      </Table>
+
+      {isDiatonicChordScale(scale) && (
+        <>
+          <Box sx={{}}>Chords</Box>
+          <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
+            <TableBody>
+              <TableRow key={'intervals'}>
+                {DIATONIC_CHORD_SCALES[scale].map((chord) => (
+                  <TableCell key={chord}>{chord}</TableCell>
+                ))}
+              </TableRow>
+            </TableBody>
+          </Table>
+        </>
+      )}
+      <Box sx={{}}>Notes</Box>
+
+      <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
+        <TableBody>
+          {rowsWithAccidentals.map((row, idx, arr) => {
+            const backgroundColor = getNoteColor(activeNotes[idx]);
+            return (
+              <TableRow
+                key={idx}
+                sx={{
+                  height: '36px',
+                }}
+                hideBorders
+              >
+                {row.map((note: Root, cIdx, cArr) => (
+                  <TableCell
+                    alignContent="center"
+                    sx={{
+                      minWidth: '30px',
+                      width: '30px',
+                      color: (t) => t.palette.getContrastText(backgroundColor),
+                      padding: '0px',
+                    }}
+                    key={note}
+                  >
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: '26px',
+                        justifyContent: 'center',
+                        borderRadius: '50%',
+                        borderTopRightRadius:
+                          cIdx === cArr.length - 1 ? '13px' : '0px',
+                        borderBottomRightRadius:
+                          cIdx === cArr.length - 1 ? '13px' : '0px',
+                        borderTopLeftRadius: cIdx === 0 ? '13px' : '0px',
+                        borderBottomLeftRadius: cIdx === 0 ? '13px' : '0px',
+                        backgroundColor,
+                        fontSize: '0.9rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {note}
+                    </Box>
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </Box>
   );
 };
 

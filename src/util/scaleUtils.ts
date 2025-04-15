@@ -1,5 +1,5 @@
-type NoteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B';
-type Accidental = 'bb' | 'b' | '' | '#' | '##';
+export type NoteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B';
+export type Accidental = 'bb' | 'b' | '' | '#' | '##';
 
 export type Note = `${NoteName}${Accidental}`;
 
@@ -9,7 +9,12 @@ type IntervalQuality = 'dim' | 'm' | 'M' | 'P' | 'aug';
 
 type Interval = `${IntervalQuality}${ScaleDegree}`;
 
-export const NOTE_ORDER: Note[] = [
+export type Root = Extract<
+  Note,
+  'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'C#' | 'D#' | 'F#' | 'G#' | 'A#'
+>;
+
+export const NOTE_ORDER: Root[] = [
   'C',
   'C#',
   'D',
@@ -24,7 +29,7 @@ export const NOTE_ORDER: Note[] = [
   'B',
 ];
 
-export const CYCLE_OF_FIFTHS: Note[] = [
+export const CYCLE_OF_FIFTHS: Root[] = [
   'C',
   'G',
   'D',
@@ -166,6 +171,37 @@ export const SCALE_INTERVALS: Record<SCALE, Interval[]> = {
   arabian: ['P1', 'M2', 'M3', 'P4', 'P5', 'm6', 'm7'],
 } as const;
 
+export const DIATONIC_CHORD_SCALES: Record<DiatonicChordScale, string[]> = {
+  major: ['M', 'm', 'm', 'M', 'M', 'm', 'dim'],
+  minor: ['m', 'dim', 'M', 'm', 'm', 'M', 'M'],
+  dorian: ['m', 'm', 'M', 'M', 'm', 'dim', 'M'],
+  phrygian: ['m', 'M', 'M', 'M', 'm', 'M', 'dim'],
+  mixolydian: ['M', 'm', 'dim', 'M', 'M', 'm', 'M'],
+  aeolian: ['m', 'dim', 'M', 'm', 'm', 'M', 'M'],
+  locrian: ['dim', 'M', 'm', 'm', 'M', 'M', 'm'],
+  ionian: ['M', 'm', 'm', 'M', 'M', 'm', 'dim'],
+  lydian: ['M', 'M', 'm', 'dim', 'M', 'm', 'm'],
+} as const;
+
+export type DiatonicChordScale = Extract<
+  SCALE,
+  | 'major'
+  | 'minor'
+  | 'dorian'
+  | 'phrygian'
+  | 'mixolydian'
+  | 'aeolian'
+  | 'locrian'
+  | 'ionian'
+  | 'lydian'
+>;
+
+export function isDiatonicChordScale(
+  scale: SCALE
+): scale is DiatonicChordScale {
+  return Object.keys(DIATONIC_CHORD_SCALES).includes(scale);
+}
+
 const CHORD_INTERVALS: Record<string, Interval[]> = {
   maj: ['P1', 'M3', 'P5'],
   min: ['P1', 'm3', 'P5'],
@@ -192,17 +228,17 @@ const CHORD_INTERVALS: Record<string, Interval[]> = {
   slash: ['P1', 'M3', 'P5', 'P8'],
 };
 
-function getNoteIndex(note: Note): number {
-  return NOTE_ORDER.indexOf(note.replace(/b/g, '#') as Note);
+function getNoteIndex(note: Root): number {
+  return NOTE_ORDER.indexOf(note.replace(/b/g, '#') as Root);
 }
 
-function transpose(note: Note, semitones: number): Note {
+function transpose(note: Root, semitones: number): Root {
   const index = getNoteIndex(note);
   return NOTE_ORDER[(index + semitones + 12) % 12];
 }
 
-export function adjustEnharmonic(note: Note): Note {
-  return ENHARMONIC_EQUIVALENTS[note] as Note;
+export function adjustEnharmonic(note: Root): Root {
+  return ENHARMONIC_EQUIVALENTS[note] as Root;
 }
 
 function getSemitones(interval: Interval): number {
@@ -230,14 +266,14 @@ function getSemitones(interval: Interval): number {
 }
 
 export function computeScale(
-  root: Note,
+  root: Root,
   scaleType: keyof typeof SCALE_INTERVALS
-): Note[] {
+): Root[] {
   const intervals = SCALE_INTERVALS[scaleType];
   return intervals.map((interval) => transpose(root, getSemitones(interval)));
 }
 
-export function identifyChord(notes: Note[]): string {
+export function identifyChord(notes: Root[]): string {
   const sortedNotes = notes.sort(
     (a, b) => NOTE_ORDER.indexOf(a) - NOTE_ORDER.indexOf(b)
   );
@@ -263,6 +299,7 @@ export function identifyChord(notes: Note[]): string {
   }
   return 'Unknown Chord';
 }
+
 const CHORD_SHORTHAND: Record<string, { classical: string; jazz: string }> = {
   maj: { classical: 'M', jazz: 'maj' },
   min: { classical: 'm', jazz: 'min' },
