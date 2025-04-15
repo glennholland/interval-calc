@@ -37,7 +37,7 @@ const DataTable = ({
       <Box sx={{}}>Scale Degrees</Box>
       <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
         <TableBody>
-          <TableRow key={rowsWithAccidentals.length}>
+          <TableRow key={rowsWithAccidentals.length} sx={{ padding: '0 4px' }}>
             {rowsWithAccidentals[0].map((_, idx) => (
               <TableCell
                 alignContent="center"
@@ -57,7 +57,7 @@ const DataTable = ({
       <Box sx={{}}>Intervals</Box>
       <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
         <TableBody>
-          <TableRow key={'intervals'}>
+          <TableRow key={'intervals'} sx={{ padding: '0 4px' }}>
             {computedIntervals.map((interval) => (
               <TableCell key={interval}>{interval}</TableCell>
             ))}
@@ -70,7 +70,7 @@ const DataTable = ({
           <Box sx={{}}>Chords</Box>
           <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
             <TableBody>
-              <TableRow key={'intervals'}>
+              <TableRow key={'intervals'} sx={{ padding: '0 4px' }}>
                 {DIATONIC_CHORD_SCALES[scale].map((chord) => (
                   <TableCell key={chord}>{chord}</TableCell>
                 ))}
@@ -81,7 +81,11 @@ const DataTable = ({
       )}
       <Box sx={{}}>Notes</Box>
 
-      <Table sx={{ backgroundColor: (t) => t.palette.background.paper }}>
+      <Table
+        sx={{
+          backgroundColor: (t) => t.palette.background.paper,
+        }}
+      >
         <TableBody>
           {rowsWithAccidentals.map((row, idx, arr) => {
             const backgroundColor = getNoteColor(activeNotes[idx]);
@@ -90,6 +94,7 @@ const DataTable = ({
                 key={idx}
                 sx={{
                   height: '36px',
+                  padding: '0 4px',
                 }}
                 hideBorders
               >
